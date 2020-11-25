@@ -396,7 +396,7 @@ def index_count_postgres_ia(connection, query):
         # print(index_pin)
         # print(sub_part_tab)
         # dict_postgres['tab_count_fin'] = str(cursor.rowcount)
-        dict_postgres['index_count_pin'] = str(len(index_ia)
+        dict_postgres['index_count_pin'] = str(len(index_ia))
         # print("Table Counts is          :" + str(cursor.rowcount))
 
     except OperationalError as e:
