@@ -56,7 +56,7 @@ def table_count_postgres_fin(connection, query):
         table_counts = cursor.fetchall()
         sub_part_tab = cursor1.fetchall()
         tab_fin = [i for i in table_counts if i not in sub_part_tab]
-        print(tab_fin)
+        #print(tab_fin)
         #print(sub_part_tab)
         #dict_postgres['tab_count_fin'] = str(cursor.rowcount)
         dict_postgres['tab_count_fin'] = str(len(tab_fin))
@@ -112,7 +112,7 @@ def table_count_postgres_ia(connection, query):
         table_counts = cursor.fetchall()
         sub_part_tab = cursor1.fetchall()
         tab_ia = [i for i in table_counts if i not in sub_part_tab]
-        print(tab_ia)
+        #print(tab_ia)
         # print(sub_part_tab)
         # dict_postgres['tab_count_fin'] = str(cursor.rowcount)
         dict_postgres['tab_count_ia'] = str(len(tab_ia))
@@ -338,7 +338,7 @@ def index_count_postgres_fin(connection, query):
         index_counts = cursor.fetchall()
         sub_part_tab = cursor1.fetchall()
         tab_fin = [i for i in index_counts if i not in sub_part_tab]
-        print(tab_fin)
+        #print(tab_fin)
         # print(sub_part_tab)
         # dict_postgres['tab_count_fin'] = str(cursor.rowcount)
         dict_postgres['index_count_fin'] = str(len(tab_fin))
@@ -388,15 +388,14 @@ def index_count_postgres_ia(connection, query):
     cursor1 = connection.cursor()
     try:
         cursor.execute(query)
-        cursor1.execute(
-            "SELECT child.relname AS child FROM pg_inherits JOIN pg_class parent ON pg_inherits.inhparent = parent.oid JOIN pg_class child ON pg_inherits.inhrelid   = child.oid JOIN pg_namespace nmsp_parent   ON nmsp_parent.oid  = parent.relnamespace JOIN pg_namespace nmsp_child    ON nmsp_child.oid   = child.relnamespace where nmsp_child.nspname='fin';")
+        cursor1.execute("SELECT child.relname AS child FROM pg_inherits JOIN pg_class parent ON pg_inherits.inhparent = parent.oid JOIN pg_class child ON pg_inherits.inhrelid   = child.oid JOIN pg_namespace nmsp_parent   ON nmsp_parent.oid  = parent.relnamespace JOIN pg_namespace nmsp_child    ON nmsp_child.oid   = child.relnamespace where nmsp_child.nspname='fin';")
         index_counts = cursor.fetchall()
         sub_part_tab = cursor1.fetchall()
         index_ia = [i for i in index_counts if i not in sub_part_tab]
         # print(index_pin)
         # print(sub_part_tab)
         # dict_postgres['tab_count_fin'] = str(cursor.rowcount)
-        dict_postgres['index_count_pin'] = str(len(index_ia))
+        dict_postgres['index_count_ia'] = str(len(index_ia))
         # print("Table Counts is          :" + str(cursor.rowcount))
 
     except OperationalError as e:
@@ -876,58 +875,66 @@ def cmp(dictionary1, dictionary2):
             uncommon_pairs[key] = dictionary1[key]
             print(key, dictionary1[key], dictionary2[key])
 
-    print(common_pairs)
+    #print(common_pairs)
     print("\n")
-    print(uncommon_pairs)
+    #print(uncommon_pairs)
     print("\n")
     print("Below are the Counts of Postgres and oracle = " + "\n")
 
     print("Postgres FIN Table counts        : ", dict_postgres['tab_count_fin'])
-    #print("Postgres PIN Table counts        : ", dict_postgres['tab_count_pin'])
-    #print("Postgres IA Table counts         : ", dict_postgres['tab_count_ia'] + "\n")
+    print("Oracle FIN Table counts          : ", dict_oracle['tab_count_fin']+ "\n")
 
-    print("Oracle FIN Table counts          : ", dict_oracle['tab_count_fin'])
-    # print("Oracle PIN Table counts          : ", dict_oracle['tab_count_pin'])
-    # print("Oracle IA Table counts           : ", dict_oracle['tab_count_ia'] + "\n")
+    print("Postgres PIN Table counts        : ", dict_postgres['tab_count_pin'])
+    print("Oracle PIN Table counts          : ", dict_oracle['tab_count_pin']+ "\n")
 
-    print("Postgres FIN Trigger counts      : ", dict_postgres['trigger_count_fin'])
+    print("Postgres IA Table counts         : ", dict_postgres['tab_count_ia'] )
+    print("Oracle IA Table counts           : ", dict_oracle['tab_count_ia'] + "\n")
+
+    # print("Postgres FIN Trigger counts      : ", dict_postgres['trigger_count_fin'])
+    # print("Oracle FIN Trigger counts         : ", dict_oracle['trigger_count_fin']+ "\n")
+    #
     # print("Postgres PIN Trigger counts      : ", dict_postgres['trigger_count_pin'])
-    # print("Postgres IA Trigger counts       : ", dict_postgres['trigger_count_ia'] + "\n")
-
-    print("Oracle FINTrigger counts         : ", dict_oracle['trigger_count_fin'])
-    # print("Oracle PIN Trigger counts        : ", dict_oracle['trigger_count_pin'])
+    # print("Oracle PIN Trigger counts        : ", dict_oracle['trigger_count_pin']+ "\n")
+    #
+    #
+    # print("Postgres IA Trigger counts       : ", dict_postgres['trigger_count_ia'])
     # print("Oracle IA Trigger counts         : ", dict_oracle['trigger_count_ia'] + "\n")
 
     print("Postgres  FIN index count s      : ", dict_postgres['index_count_fin'])
-    # print("Postgres  PIN index count s      : ", dict_postgres['index_count_pin'])
-    # print("Postgres  IA index count s       : ", dict_postgres['index_count_ia'] + "\n")
+    print("Oracle FIN index count s         : ", dict_oracle['index_count_fin'] + "\n")
 
-    print("Oracle FIN index count s         : ", dict_oracle['index_count_fin'])
-    # print("Oracle PIN index count s         : ", dict_oracle['index_count_pin'])
-    # print("Oracle IA index count s          :", dict_oracle['index_count_ia'] + "\n")
+    print("Postgres  PIN index count s      : ", dict_postgres['index_count_pin'])
+    print("Oracle PIN index count s         : ", dict_oracle['index_count_pin']+ "\n")
 
-    print("Postgres FIN constraint count    : ", dict_postgres['constraint_count_fin'])
+    print("Postgres  IA index count s       : ", dict_postgres['index_count_ia'])
+    print("Oracle IA index count s          :", dict_oracle['index_count_ia'] + "\n")
+
+    # print("Postgres FIN constraint count    : ", dict_postgres['constraint_count_fin'])
+    # print("Oracle FIN constraint count      : ", dict_oracle['constraint_count_fin']+ "\n")
+    #
     # print("Postgres PIN constraint count    : ", dict_postgres['constraint_count_pin'])
-    # print("Postgres IA constraint count     : ", dict_postgres['constraint_count_ia'] + "\n")
-
-    print("Oracle FIN constraint count      : ", dict_oracle['constraint_count_fin'])
-    # print("Oracle PIN constraint count      : ", dict_oracle['constraint_count_pin'])
+    # print("Oracle PIN constraint count      : ", dict_oracle['constraint_count_pin']+ "\n")
+    #
+    # print("Postgres IA constraint count     : ", dict_postgres['constraint_count_ia'] )
     # print("Oracle IA constraint count       : ", dict_oracle['constraint_count_ia'] + "\n")
 
-    print("Postgres FIN partition count     : ", dict_postgres['partition_count_fin'])
+    # print("Postgres FIN partition count     : ", dict_postgres['partition_count_fin'])
+    # print("Oracle FIN partition count       : ", dict_oracle['partition_count_fin'] + "\n")
+    #
     # print("Postgres PIN partition count     : ", dict_postgres['partition_count_pin'])
-    # print("Postgres IA partition count      : ", dict_postgres['partition_count_ia'] + "\n")
-
-    print("Oracle FIN partition count       : ", dict_oracle['partition_count_fin'])
-    # print("Oracle PIN partition count       : ", dict_oracle['partition_count_pin'])
+    # print("Oracle PIN partition count       : ", dict_oracle['partition_count_pin'] + "\n")
+    #
+    # print("Postgres IA partition count      : ", dict_postgres['partition_count_ia'] )
     # print("Oracle IA partition count        : ", dict_oracle['partition_count_ia'] + "\n")
-
-    print("Postgres FIN sub partition count : ", dict_postgres['sub_partition_count_fin'])
+    #
+    # print("Postgres FIN sub partition count : ", dict_postgres['sub_partition_count_fin'])
+    # print("Oracle FIN sub partition count   : ", dict_oracle['sub_partition_count_fin'] + "\n")
+    #
+    #
     # print("Postgres PIN sub partition count : ", dict_postgres['sub_partition_count_pin'])
-    # print("Postgres IA sub partition count  : ", dict_postgres['sub_partition_count_ia'] + "\n")
-
-    print("Oracle FIN sub partition count   : ", dict_oracle['sub_partition_count_fin'])
-    # print("Oracle PIN sub partition count   : ", dict_oracle['sub_partition_count_pin'])
+    # print("Oracle PIN sub partition count   : ", dict_oracle['sub_partition_count_pin'] + "\n")
+    #
+    # print("Postgres IA sub partition count  : ", dict_postgres['sub_partition_count_ia'])
     # print("Oracle IA sub partition count    : ", dict_oracle['sub_partition_count_ia'] + "\n")
 
 
@@ -937,7 +944,7 @@ cmp(dict_oracle,dict_postgres)
 
 
 
-#SELECT PARTITION_NAME , SUBPARTITION_COUNT	 FROM ALL_TAB_PARTITIONS WHERE table_owner='FIN'
+#SELECT *	 FROM ALL_TAB_SUBPARTITIONS WHERE table_owner='FIN'
 
 # SELECT nmsp_parent.nspname AS parent_schema, parent.relname      AS parent, nmsp_child.nspname  AS child_schema, child.relname       AS child FROM pg_inherits JOIN pg_class parent            ON pg_inherits.inhparent = parent.oid JOIN pg_class child             ON pg_inherits.inhrelid   = child.oid JOIN pg_namespace nmsp_parent   ON nmsp_parent.oid  = parent.relnamespace JOIN pg_namespace nmsp_child    ON nmsp_child.oid   = child.relnamespace where nmsp_parent.nspname='fin';
 
