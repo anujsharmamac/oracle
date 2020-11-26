@@ -362,7 +362,7 @@ def index_count_postgres_pin(connection, query):
     try:
         cursor.execute(query)
         cursor1.execute(
-            "SELECT child.relname AS child FROM pg_inherits JOIN pg_class parent ON pg_inherits.inhparent = parent.oid JOIN pg_class child ON pg_inherits.inhrelid   = child.oid JOIN pg_namespace nmsp_parent   ON nmsp_parent.oid  = parent.relnamespace JOIN pg_namespace nmsp_child    ON nmsp_child.oid   = child.relnamespace where nmsp_child.nspname='fin';")
+            "SELECT child.relname AS child FROM pg_inherits JOIN pg_class parent ON pg_inherits.inhparent = parent.oid JOIN pg_class child ON pg_inherits.inhrelid   = child.oid JOIN pg_namespace nmsp_parent   ON nmsp_parent.oid  = parent.relnamespace JOIN pg_namespace nmsp_child    ON nmsp_child.oid   = child.relnamespace where nmsp_child.nspname='pin';")
         index_counts = cursor.fetchall()
         sub_part_tab = cursor1.fetchall()
         index_pin = [i for i in index_counts if i not in sub_part_tab]
@@ -388,7 +388,7 @@ def index_count_postgres_ia(connection, query):
     cursor1 = connection.cursor()
     try:
         cursor.execute(query)
-        cursor1.execute("SELECT child.relname AS child FROM pg_inherits JOIN pg_class parent ON pg_inherits.inhparent = parent.oid JOIN pg_class child ON pg_inherits.inhrelid   = child.oid JOIN pg_namespace nmsp_parent   ON nmsp_parent.oid  = parent.relnamespace JOIN pg_namespace nmsp_child    ON nmsp_child.oid   = child.relnamespace where nmsp_child.nspname='fin';")
+        cursor1.execute("SELECT child.relname AS child FROM pg_inherits JOIN pg_class parent ON pg_inherits.inhparent = parent.oid JOIN pg_class child ON pg_inherits.inhrelid   = child.oid JOIN pg_namespace nmsp_parent   ON nmsp_parent.oid  = parent.relnamespace JOIN pg_namespace nmsp_child    ON nmsp_child.oid   = child.relnamespace where nmsp_child.nspname='ia';")
         index_counts = cursor.fetchall()
         sub_part_tab = cursor1.fetchall()
         index_ia = [i for i in index_counts if i not in sub_part_tab]
